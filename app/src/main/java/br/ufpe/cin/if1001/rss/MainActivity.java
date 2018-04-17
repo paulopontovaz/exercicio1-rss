@@ -26,56 +26,39 @@ import java.util.List;
 import br.ufpe.cin.if1001.rss.Utilities.Constants;
 
 public class MainActivity extends Activity {
-
-    //ao fazer envio da resolucao, use este link no seu codigo!
-    private final String RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml";
-
-    //OUTROS LINKS PARA TESTAR...
-    //http://rss.cnn.com/rss/edition.rss
-    //http://pox.globo.com/rss/g1/brasil/
-    //http://pox.globo.com/rss/g1/ciencia-e-saude/
-    //http://pox.globo.com/rss/g1/tecnologia/
-
-    //use ListView ao invés de TextView - deixe o atributo com o mesmo nome
+    //Modificando o TextView para ListView
     private ListView conteudoRSS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //use ListView ao invés de TextView - deixe o ID no layout XML com o mesmo nome conteudoRSS
-        //isso vai exigir o processamento do XML baixado da internet usando o ParserRSS
         conteudoRSS = (ListView) findViewById(R.id.conteudoRSS);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //rssfeed
+        //Busca entre as preferências o valor da chave "rssfeed" para popular a ListView com o retorno do processamento.
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!sharedPreferences.contains(Constants.RSS_FEED)){
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(Constants.RSS_FEED, getString(R.string.rss_feed_default));
-            editor.apply();
-        }
-
-        String rssfeed = sharedPreferences.getString(Constants.RSS_FEED,"");
+        String rssfeed = sharedPreferences.getString(Constants.RSS_FEED, getString(R.string.rss_feed_default));
         new CarregaRSStask().execute(rssfeed);
     }
 
+    //Função necessária para exibir o botão estilo dropdown menu no canto superior direito da activity.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.item, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //Função utilizada quando um item do dropdown menu (criado pela função acima) é acionado.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.preferences_button) {
+        if (id == R.id.preferences_button)
+            //Redirecionando para a activity de preferências se o item selecionado no menu tiver a ID do "preferences_button"
             startActivity(new Intent(getApplicationContext(), PreferenciasActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -100,8 +83,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(String s) {
             Toast.makeText(getApplicationContext(), "terminando...", Toast.LENGTH_SHORT).show();
 
-            //ajuste para usar uma ListView
-            //o layout XML a ser utilizado esta em res/layout/itemlista.xml
+            //Obtendo os itens através do parser da string recebida na função.
             List<ItemRSS> itens = null;
             try {
                 itens = ParserRSS.parse(s);
@@ -111,8 +93,11 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
 
+            //Populando o adapter criado com os itens da lista obtida pelo parser.
             ItemRSSAdapter itemRSSArrayAdapter = new ItemRSSAdapter(getApplicationContext(), R.layout.itemlista, itens);
             conteudoRSS.setAdapter(itemRSSArrayAdapter);
+            //Cria-se um intent para acionar o navegador do android toda vez que uma opção da ListView for acionada.
+            //O link do item selecionado na lista será enviado junto com o intent (setData).
             conteudoRSS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView adapterView, View view, int i, long l) {

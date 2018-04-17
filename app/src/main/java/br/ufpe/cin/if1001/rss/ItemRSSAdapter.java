@@ -11,10 +11,6 @@ import java.util.List;
 
 public class ItemRSSAdapter extends ArrayAdapter<ItemRSS> {
 
-    public ItemRSSAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-    }
-
     public ItemRSSAdapter(Context context, int resource, List<ItemRSS> items) {
         super(context, resource, items);
     }

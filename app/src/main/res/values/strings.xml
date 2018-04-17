@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">RSS</string>
     <string name="rss_feed_default">http://leopoldomt.com/if1001/g1brasil.xml</string>
+    <!--
+        OUTROS LINKS PARA TESTAR...
+        http://rss.cnn.com/rss/edition.rss
+        http://pox.globo.com/rss/g1/brasil/
+        http://pox.globo.com/rss/g1/ciencia-e-saude/
+        http://pox.globo.com/rss/g1/tecnologia/
+    -->
 </resources>

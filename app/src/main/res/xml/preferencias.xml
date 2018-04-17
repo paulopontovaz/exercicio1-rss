@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- Preferência do tipo texto, com valor padrão obtido pelo xml de strings e chave 'rssfeed'. -->
+    <EditTextPreference
+        android:defaultValue="@string/rss_feed_default"
+        android:dialogTitle="Modificar RSS feed"
+        android:key="rssfeed"
+        android:negativeButtonText="Cancelar"
+        android:positiveButtonText="Salvar"
+        android:title="RSS Feed" />
 </PreferenceScreen>
